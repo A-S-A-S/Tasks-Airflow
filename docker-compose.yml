@@ -19,6 +19,7 @@ services:
       interval: 30s
       timeout: 20s
       retries: 3
+      start_period: 10s
 
   # Create buckets on startup
   minio-init:
@@ -62,7 +63,7 @@ services:
 
   # One-shot container to create Af tabls in postgres + admin user
   airflow-init:
-    image: apache/airflow:2.9.1
+    image: apache/airflow:2.10.5
     container_name: airflow-init
     env_file: .env
     environment:
@@ -71,6 +72,7 @@ services:
       AIRFLOW__CORE__LOAD_EXAMPLES: "false"
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
       AIRFLOW__WEBSERVER__SECRET_KEY: ${AIRFLOW_SECRET_KEY}
+      _PIP_ADDITIONAL_REQUIREMENTS: "apache-airflow-providers-amazon apache-airflow-providers-postgres"
     command: >
       bash -c "
         airflow db migrate &&
@@ -88,7 +90,7 @@ services:
 
   # Airflow UI
   webserver:
-    image: apache/airflow:2.9.1
+    image: apache/airflow:2.10.5
     container_name: airflow-webserver
     env_file: .env
     environment:
@@ -98,6 +100,7 @@ services:
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
       AIRFLOW__WEBSERVER__SECRET_KEY: ${AIRFLOW_SECRET_KEY}
       AIRFLOW__WEBSERVER__EXPOSE_CONFIG: "true"
+      _PIP_ADDITIONAL_REQUIREMENTS: "apache-airflow-providers-amazon apache-airflow-providers-postgres"
     command: webserver
     ports:
       - "8080:8080"
@@ -119,7 +122,7 @@ services:
 
   # Airflow scheduler
   airflow-scheduler:
-    image: apache/airflow:2.9.1
+    image: apache/airflow:2.10.5
     container_name: airflow-scheduler
     env_file: .env
     environment:
@@ -128,6 +131,7 @@ services:
       AIRFLOW__CORE__LOAD_EXAMPLES: "false"
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
       AIRFLOW__WEBSERVER__SECRET_KEY: ${AIRFLOW_SECRET_KEY}
+      _PIP_ADDITIONAL_REQUIREMENTS: "apache-airflow-providers-amazon apache-airflow-providers-postgres"
     command: scheduler
     volumes:
       - ./dags:/opt/airflow/dags
