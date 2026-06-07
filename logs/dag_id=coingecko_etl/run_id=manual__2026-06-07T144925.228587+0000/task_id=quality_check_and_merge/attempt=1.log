@@ -1,0 +1,21 @@
+[2026-06-07T15:09:00.272+0000] {local_task_job_runner.py:123} INFO - ::group::Pre task execution logs
+[2026-06-07T15:09:00.313+0000] {taskinstance.py:2614} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: coingecko_etl.quality_check_and_merge manual__2026-06-07T14:49:25.228587+00:00 [queued]>
+[2026-06-07T15:09:00.334+0000] {taskinstance.py:2614} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: coingecko_etl.quality_check_and_merge manual__2026-06-07T14:49:25.228587+00:00 [queued]>
+[2026-06-07T15:09:00.337+0000] {taskinstance.py:2867} INFO - Starting attempt 1 of 3
+[2026-06-07T15:09:00.368+0000] {taskinstance.py:2890} INFO - Executing <Task(PythonOperator): quality_check_and_merge> on 2026-06-07 14:49:25.228587+00:00
+[2026-06-07T15:09:00.387+0000] {standard_task_runner.py:104} INFO - Running: ['***', 'tasks', 'run', 'coingecko_etl', 'quality_check_and_merge', 'manual__2026-06-07T14:49:25.228587+00:00', '--job-id', '96', '--raw', '--subdir', 'DAGS_FOLDER/coingecko.py', '--cfg-path', '/tmp/tmpv7n8tw45']
+[2026-06-07T15:09:00.389+0000] {logging_mixin.py:190} WARNING - /home/***/.local/lib/python3.12/site-packages/***/task/task_runner/standard_task_runner.py:70 DeprecationWarning: This process (pid=1566) is multi-threaded, use of fork() may lead to deadlocks in the child.
+[2026-06-07T15:09:00.392+0000] {standard_task_runner.py:72} INFO - Started process 1568 to run task
+[2026-06-07T15:09:00.391+0000] {standard_task_runner.py:105} INFO - Job 96: Subtask quality_check_and_merge
+[2026-06-07T15:09:00.514+0000] {task_command.py:467} INFO - Running <TaskInstance: coingecko_etl.quality_check_and_merge manual__2026-06-07T14:49:25.228587+00:00 [running]> on host 4bbe0590abd5
+[2026-06-07T15:09:00.782+0000] {taskinstance.py:3134} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='data-engineering' AIRFLOW_CTX_DAG_ID='coingecko_etl' AIRFLOW_CTX_TASK_ID='quality_check_and_merge' AIRFLOW_CTX_EXECUTION_DATE='2026-06-07T14:49:25.228587+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2026-06-07T14:49:25.228587+00:00'
+[2026-06-07T15:09:00.786+0000] {taskinstance.py:732} INFO - ::endgroup::
+[2026-06-07T15:09:00.959+0000] {base.py:84} INFO - Retrieving connection 'minio_conn'
+[2026-06-07T15:09:00.965+0000] {connection_wrapper.py:325} INFO - AWS Connection (conn_id='minio_conn', conn_type='aws') credentials retrieved from login and password.
+[2026-06-07T15:09:06.287+0000] {coingecko.py:232} INFO - Processed QC passed: 50 total records
+[2026-06-07T15:09:06.365+0000] {python.py:240} INFO - Done. Returned value was: None
+[2026-06-07T15:09:06.388+0000] {taskinstance.py:341} INFO - ::group::Post task execution logs
+[2026-06-07T15:09:06.395+0000] {taskinstance.py:353} INFO - Marking task as SUCCESS. dag_id=coingecko_etl, task_id=quality_check_and_merge, run_id=manual__2026-06-07T14:49:25.228587+00:00, execution_date=20260607T144925, start_date=20260607T150900, end_date=20260607T150906
+[2026-06-07T15:09:06.497+0000] {local_task_job_runner.py:266} INFO - Task exited with return code 0
+[2026-06-07T15:09:06.553+0000] {taskinstance.py:3901} INFO - 1 downstream tasks scheduled from follow-on schedule check
+[2026-06-07T15:09:06.559+0000] {local_task_job_runner.py:245} INFO - ::endgroup::

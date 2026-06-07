@@ -1,0 +1,24 @@
+[2026-06-07T15:06:34.872+0000] {local_task_job_runner.py:123} INFO - ::group::Pre task execution logs
+[2026-06-07T15:06:35.476+0000] {taskinstance.py:2614} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: coingecko_etl.transform_group.transform_highcap manual__2026-06-07T14:49:25.228587+00:00 [queued]>
+[2026-06-07T15:06:35.638+0000] {taskinstance.py:2614} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: coingecko_etl.transform_group.transform_highcap manual__2026-06-07T14:49:25.228587+00:00 [queued]>
+[2026-06-07T15:06:35.646+0000] {taskinstance.py:2867} INFO - Starting attempt 1 of 3
+[2026-06-07T15:06:35.781+0000] {taskinstance.py:2890} INFO - Executing <Task(PythonOperator): transform_group.transform_highcap> on 2026-06-07 14:49:25.228587+00:00
+[2026-06-07T15:06:35.830+0000] {standard_task_runner.py:104} INFO - Running: ['***', 'tasks', 'run', 'coingecko_etl', 'transform_group.transform_highcap', 'manual__2026-06-07T14:49:25.228587+00:00', '--job-id', '93', '--raw', '--subdir', 'DAGS_FOLDER/coingecko.py', '--cfg-path', '/tmp/tmpiojwtgjc']
+[2026-06-07T15:06:35.827+0000] {logging_mixin.py:190} WARNING - /home/***/.local/lib/python3.12/site-packages/***/task/task_runner/standard_task_runner.py:70 DeprecationWarning: This process (pid=1534) is multi-threaded, use of fork() may lead to deadlocks in the child.
+[2026-06-07T15:06:35.840+0000] {standard_task_runner.py:72} INFO - Started process 1543 to run task
+[2026-06-07T15:06:35.836+0000] {standard_task_runner.py:105} INFO - Job 93: Subtask transform_group.transform_highcap
+[2026-06-07T15:06:36.072+0000] {task_command.py:467} INFO - Running <TaskInstance: coingecko_etl.transform_group.transform_highcap manual__2026-06-07T14:49:25.228587+00:00 [running]> on host 4bbe0590abd5
+[2026-06-07T15:06:36.956+0000] {taskinstance.py:3134} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='data-engineering' AIRFLOW_CTX_DAG_ID='coingecko_etl' AIRFLOW_CTX_TASK_ID='transform_group.transform_highcap' AIRFLOW_CTX_EXECUTION_DATE='2026-06-07T14:49:25.228587+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2026-06-07T14:49:25.228587+00:00'
+[2026-06-07T15:06:36.970+0000] {taskinstance.py:732} INFO - ::endgroup::
+[2026-06-07T15:06:37.266+0000] {base.py:84} INFO - Retrieving connection 'minio_conn'
+[2026-06-07T15:06:37.270+0000] {connection_wrapper.py:325} INFO - AWS Connection (conn_id='minio_conn', conn_type='aws') credentials retrieved from login and password.
+[2026-06-07T15:06:41.231+0000] {job.py:229} INFO - Heartbeat recovered after 27.43 seconds
+[2026-06-07T15:08:14.304+0000] {job.py:229} INFO - Heartbeat recovered after 82.49 seconds
+[2026-06-07T15:08:37.710+0000] {job.py:229} INFO - Heartbeat recovered after 23.53 seconds
+[2026-06-07T15:08:54.174+0000] {job.py:229} INFO - Heartbeat recovered after 16.48 seconds
+[2026-06-07T15:08:54.452+0000] {coingecko.py:171} INFO - High-cap transform: 50 → 36 rows
+[2026-06-07T15:08:54.563+0000] {python.py:240} INFO - Done. Returned value was: None
+[2026-06-07T15:08:54.836+0000] {taskinstance.py:341} INFO - ::group::Post task execution logs
+[2026-06-07T15:08:54.846+0000] {taskinstance.py:353} INFO - Marking task as SUCCESS. dag_id=coingecko_etl, task_id=transform_group.transform_highcap, run_id=manual__2026-06-07T14:49:25.228587+00:00, execution_date=20260607T144925, start_date=20260607T150635, end_date=20260607T150854
+[2026-06-07T15:08:55.514+0000] {local_task_job_runner.py:266} INFO - Task exited with return code 0
+[2026-06-07T15:08:55.556+0000] {local_task_job_runner.py:245} INFO - ::endgroup::

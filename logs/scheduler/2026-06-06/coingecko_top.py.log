@@ -2095,3 +2095,143 @@ Traceback (most recent call last):
 ModuleNotFoundError: No module named 'airflow.providers.postgres.operators'
 [2026-06-06T16:32:26.270+0000] {processor.py:927} WARNING - No viable dags retrieved from /opt/airflow/dags/coingecko_top.py
 [2026-06-06T16:32:26.304+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/coingecko_top.py took 1.139 seconds
+[2026-06-06T16:32:56.472+0000] {processor.py:186} INFO - Started process (PID=220) to work on /opt/airflow/dags/coingecko_top.py
+[2026-06-06T16:32:56.474+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/coingecko_top.py for tasks to queue
+[2026-06-06T16:32:56.478+0000] {logging_mixin.py:190} INFO - [2026-06-06T16:32:56.478+0000] {dagbag.py:588} INFO - Filling up the DagBag from /opt/airflow/dags/coingecko_top.py
+[2026-06-06T16:32:57.357+0000] {logging_mixin.py:190} INFO - [2026-06-06T16:32:57.350+0000] {dagbag.py:387} ERROR - Failed to import: /opt/airflow/dags/coingecko_top.py
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/dagbag.py", line 383, in parse
+    loader.exec_module(new_module)
+  File "<frozen importlib._bootstrap_external>", line 999, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "/opt/airflow/dags/coingecko_top.py", line 15, in <module>
+    from airflow.providers.postgres.operators.postgres import PostgresOperator
+ModuleNotFoundError: No module named 'airflow.providers.postgres.operators'
+[2026-06-06T16:32:57.363+0000] {processor.py:927} WARNING - No viable dags retrieved from /opt/airflow/dags/coingecko_top.py
+[2026-06-06T16:32:57.400+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/coingecko_top.py took 0.935 seconds
+[2026-06-06T16:33:27.713+0000] {processor.py:186} INFO - Started process (PID=226) to work on /opt/airflow/dags/coingecko_top.py
+[2026-06-06T16:33:27.716+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/coingecko_top.py for tasks to queue
+[2026-06-06T16:33:27.720+0000] {logging_mixin.py:190} INFO - [2026-06-06T16:33:27.719+0000] {dagbag.py:588} INFO - Filling up the DagBag from /opt/airflow/dags/coingecko_top.py
+[2026-06-06T16:33:28.362+0000] {logging_mixin.py:190} INFO - [2026-06-06T16:33:28.357+0000] {dagbag.py:387} ERROR - Failed to import: /opt/airflow/dags/coingecko_top.py
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/dagbag.py", line 383, in parse
+    loader.exec_module(new_module)
+  File "<frozen importlib._bootstrap_external>", line 999, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "/opt/airflow/dags/coingecko_top.py", line 15, in <module>
+    from airflow.providers.postgres.operators.postgres import PostgresOperator
+ModuleNotFoundError: No module named 'airflow.providers.postgres.operators'
+[2026-06-06T16:33:28.363+0000] {processor.py:927} WARNING - No viable dags retrieved from /opt/airflow/dags/coingecko_top.py
+[2026-06-06T16:33:28.405+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/coingecko_top.py took 0.699 seconds
+[2026-06-06T16:33:58.697+0000] {processor.py:186} INFO - Started process (PID=232) to work on /opt/airflow/dags/coingecko_top.py
+[2026-06-06T16:33:58.699+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/coingecko_top.py for tasks to queue
+[2026-06-06T16:33:58.707+0000] {logging_mixin.py:190} INFO - [2026-06-06T16:33:58.706+0000] {dagbag.py:588} INFO - Filling up the DagBag from /opt/airflow/dags/coingecko_top.py
+[2026-06-06T16:33:59.610+0000] {logging_mixin.py:190} INFO - [2026-06-06T16:33:59.604+0000] {dagbag.py:387} ERROR - Failed to import: /opt/airflow/dags/coingecko_top.py
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/dagbag.py", line 383, in parse
+    loader.exec_module(new_module)
+  File "<frozen importlib._bootstrap_external>", line 999, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "/opt/airflow/dags/coingecko_top.py", line 15, in <module>
+    from airflow.providers.postgres.operators.postgres import PostgresOperator
+ModuleNotFoundError: No module named 'airflow.providers.postgres.operators'
+[2026-06-06T16:33:59.611+0000] {processor.py:927} WARNING - No viable dags retrieved from /opt/airflow/dags/coingecko_top.py
+[2026-06-06T16:33:59.637+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/coingecko_top.py took 0.947 seconds
+[2026-06-06T16:34:29.923+0000] {processor.py:186} INFO - Started process (PID=238) to work on /opt/airflow/dags/coingecko_top.py
+[2026-06-06T16:34:29.925+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/coingecko_top.py for tasks to queue
+[2026-06-06T16:34:29.931+0000] {logging_mixin.py:190} INFO - [2026-06-06T16:34:29.930+0000] {dagbag.py:588} INFO - Filling up the DagBag from /opt/airflow/dags/coingecko_top.py
+[2026-06-06T16:34:30.845+0000] {logging_mixin.py:190} INFO - [2026-06-06T16:34:30.839+0000] {dagbag.py:387} ERROR - Failed to import: /opt/airflow/dags/coingecko_top.py
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/dagbag.py", line 383, in parse
+    loader.exec_module(new_module)
+  File "<frozen importlib._bootstrap_external>", line 999, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "/opt/airflow/dags/coingecko_top.py", line 15, in <module>
+    from airflow.providers.postgres.operators.postgres import PostgresOperator
+ModuleNotFoundError: No module named 'airflow.providers.postgres.operators'
+[2026-06-06T16:34:30.849+0000] {processor.py:927} WARNING - No viable dags retrieved from /opt/airflow/dags/coingecko_top.py
+[2026-06-06T16:34:30.881+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/coingecko_top.py took 0.970 seconds
+[2026-06-06T16:35:01.187+0000] {processor.py:186} INFO - Started process (PID=244) to work on /opt/airflow/dags/coingecko_top.py
+[2026-06-06T16:35:01.189+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/coingecko_top.py for tasks to queue
+[2026-06-06T16:35:01.209+0000] {logging_mixin.py:190} INFO - [2026-06-06T16:35:01.208+0000] {dagbag.py:588} INFO - Filling up the DagBag from /opt/airflow/dags/coingecko_top.py
+[2026-06-06T16:35:03.523+0000] {logging_mixin.py:190} INFO - [2026-06-06T16:35:03.518+0000] {dagbag.py:387} ERROR - Failed to import: /opt/airflow/dags/coingecko_top.py
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/dagbag.py", line 383, in parse
+    loader.exec_module(new_module)
+  File "<frozen importlib._bootstrap_external>", line 999, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "/opt/airflow/dags/coingecko_top.py", line 15, in <module>
+    from airflow.providers.postgres.operators.postgres import PostgresOperator
+ModuleNotFoundError: No module named 'airflow.providers.postgres.operators'
+[2026-06-06T16:35:03.525+0000] {processor.py:927} WARNING - No viable dags retrieved from /opt/airflow/dags/coingecko_top.py
+[2026-06-06T16:35:03.549+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/coingecko_top.py took 2.376 seconds
+[2026-06-06T16:35:33.811+0000] {processor.py:186} INFO - Started process (PID=250) to work on /opt/airflow/dags/coingecko_top.py
+[2026-06-06T16:35:33.814+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/coingecko_top.py for tasks to queue
+[2026-06-06T16:35:33.817+0000] {logging_mixin.py:190} INFO - [2026-06-06T16:35:33.817+0000] {dagbag.py:588} INFO - Filling up the DagBag from /opt/airflow/dags/coingecko_top.py
+[2026-06-06T16:35:34.304+0000] {logging_mixin.py:190} INFO - [2026-06-06T16:35:34.299+0000] {dagbag.py:387} ERROR - Failed to import: /opt/airflow/dags/coingecko_top.py
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/dagbag.py", line 383, in parse
+    loader.exec_module(new_module)
+  File "<frozen importlib._bootstrap_external>", line 999, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "/opt/airflow/dags/coingecko_top.py", line 15, in <module>
+    from airflow.providers.postgres.operators.postgres import PostgresOperator
+ModuleNotFoundError: No module named 'airflow.providers.postgres.operators'
+[2026-06-06T16:35:34.306+0000] {processor.py:927} WARNING - No viable dags retrieved from /opt/airflow/dags/coingecko_top.py
+[2026-06-06T16:35:34.385+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/coingecko_top.py took 0.580 seconds
+[2026-06-06T16:36:04.674+0000] {processor.py:186} INFO - Started process (PID=256) to work on /opt/airflow/dags/coingecko_top.py
+[2026-06-06T16:36:04.676+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/coingecko_top.py for tasks to queue
+[2026-06-06T16:36:04.681+0000] {logging_mixin.py:190} INFO - [2026-06-06T16:36:04.680+0000] {dagbag.py:588} INFO - Filling up the DagBag from /opt/airflow/dags/coingecko_top.py
+[2026-06-06T16:36:05.122+0000] {logging_mixin.py:190} INFO - [2026-06-06T16:36:05.118+0000] {dagbag.py:387} ERROR - Failed to import: /opt/airflow/dags/coingecko_top.py
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/dagbag.py", line 383, in parse
+    loader.exec_module(new_module)
+  File "<frozen importlib._bootstrap_external>", line 999, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "/opt/airflow/dags/coingecko_top.py", line 15, in <module>
+    from airflow.providers.postgres.operators.postgres import PostgresOperator
+ModuleNotFoundError: No module named 'airflow.providers.postgres.operators'
+[2026-06-06T16:36:05.126+0000] {processor.py:927} WARNING - No viable dags retrieved from /opt/airflow/dags/coingecko_top.py
+[2026-06-06T16:36:05.151+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/coingecko_top.py took 0.483 seconds
+[2026-06-06T16:36:35.270+0000] {processor.py:186} INFO - Started process (PID=262) to work on /opt/airflow/dags/coingecko_top.py
+[2026-06-06T16:36:35.273+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/coingecko_top.py for tasks to queue
+[2026-06-06T16:36:35.278+0000] {logging_mixin.py:190} INFO - [2026-06-06T16:36:35.277+0000] {dagbag.py:588} INFO - Filling up the DagBag from /opt/airflow/dags/coingecko_top.py
+[2026-06-06T16:36:35.844+0000] {logging_mixin.py:190} INFO - [2026-06-06T16:36:35.838+0000] {dagbag.py:387} ERROR - Failed to import: /opt/airflow/dags/coingecko_top.py
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/dagbag.py", line 383, in parse
+    loader.exec_module(new_module)
+  File "<frozen importlib._bootstrap_external>", line 999, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "/opt/airflow/dags/coingecko_top.py", line 15, in <module>
+    from airflow.providers.postgres.operators.postgres import PostgresOperator
+ModuleNotFoundError: No module named 'airflow.providers.postgres.operators'
+[2026-06-06T16:36:35.845+0000] {processor.py:927} WARNING - No viable dags retrieved from /opt/airflow/dags/coingecko_top.py
+[2026-06-06T16:36:35.869+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/coingecko_top.py took 0.606 seconds
+[2026-06-06T16:37:06.152+0000] {processor.py:186} INFO - Started process (PID=268) to work on /opt/airflow/dags/coingecko_top.py
+[2026-06-06T16:37:06.155+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/coingecko_top.py for tasks to queue
+[2026-06-06T16:37:06.159+0000] {logging_mixin.py:190} INFO - [2026-06-06T16:37:06.159+0000] {dagbag.py:588} INFO - Filling up the DagBag from /opt/airflow/dags/coingecko_top.py
+[2026-06-06T16:37:06.751+0000] {logging_mixin.py:190} INFO - [2026-06-06T16:37:06.747+0000] {dagbag.py:387} ERROR - Failed to import: /opt/airflow/dags/coingecko_top.py
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/dagbag.py", line 383, in parse
+    loader.exec_module(new_module)
+  File "<frozen importlib._bootstrap_external>", line 999, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "/opt/airflow/dags/coingecko_top.py", line 15, in <module>
+    from airflow.providers.postgres.operators.postgres import PostgresOperator
+ModuleNotFoundError: No module named 'airflow.providers.postgres.operators'
+[2026-06-06T16:37:06.752+0000] {processor.py:927} WARNING - No viable dags retrieved from /opt/airflow/dags/coingecko_top.py
+[2026-06-06T16:37:06.775+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/coingecko_top.py took 0.629 seconds
+[2026-06-06T16:37:37.123+0000] {processor.py:186} INFO - Started process (PID=274) to work on /opt/airflow/dags/coingecko_top.py
+[2026-06-06T16:37:37.128+0000] {processor.py:914} INFO - Processing file /opt/airflow/dags/coingecko_top.py for tasks to queue
+[2026-06-06T16:37:37.143+0000] {logging_mixin.py:190} INFO - [2026-06-06T16:37:37.139+0000] {dagbag.py:588} INFO - Filling up the DagBag from /opt/airflow/dags/coingecko_top.py
+[2026-06-06T16:37:42.642+0000] {logging_mixin.py:190} INFO - [2026-06-06T16:37:42.630+0000] {dagbag.py:387} ERROR - Failed to import: /opt/airflow/dags/coingecko_top.py
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/dagbag.py", line 383, in parse
+    loader.exec_module(new_module)
+  File "<frozen importlib._bootstrap_external>", line 999, in exec_module
+  File "<frozen importlib._bootstrap>", line 488, in _call_with_frames_removed
+  File "/opt/airflow/dags/coingecko_top.py", line 15, in <module>
+    from airflow.providers.postgres.operators.postgres import PostgresOperator
+ModuleNotFoundError: No module named 'airflow.providers.postgres.operators'
+[2026-06-06T16:37:42.647+0000] {processor.py:927} WARNING - No viable dags retrieved from /opt/airflow/dags/coingecko_top.py
+[2026-06-06T16:37:42.693+0000] {processor.py:208} INFO - Processing /opt/airflow/dags/coingecko_top.py took 5.585 seconds
