@@ -1,10 +1,21 @@
 [project]
-name = "airflow"
+name = "tasks-airflow-coingecko"
 version = "0.1.0"
-description = "Add your description here"
+description = "Airflow ETL pipeline for CoinGecko data with Spark orchestration"
 readme = "README.md"
 requires-python = ">=3.9"
 dependencies = [
+    "apache-airflow==2.10.5",
+    "apache-airflow-providers-amazon",
+    "apache-airflow-providers-apache-spark",
     "pandas>=2.3.3",
     "requests>=2.32.5",
+    "pendulum>=2.1",
+    "psycopg2-binary>=2.9",
+    "pyarrow>=12.0.1",
+    "pyspark==3.5.4",
 ]
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"

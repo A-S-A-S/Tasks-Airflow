@@ -41,22 +41,22 @@ log = logging.getLogger(__name__)
 
 #  Helpers 
 
-def _raw_key(run_id: str) -> str:
-    return f"coingecko/{run_id}/raw.json"
+def _raw_key(ds: str) -> str:
+    return f"coingecko/{ds}/raw.json"
 
-def _highcap_key(run_id: str) -> str:
-    return f"coingecko/{run_id}/highcap.parquet"
+def _highcap_key(ds: str) -> str:
+    return f"coingecko/{ds}/highcap.parquet"
 
-def _lowcap_key(run_id: str) -> str:
-    return f"coingecko/{run_id}/lowcap.parquet"
+def _lowcap_key(ds: str) -> str:
+    return f"coingecko/{ds}/lowcap.parquet"
 
-def _processed_key(run_id: str) -> str:
-    return f"coingecko/{run_id}/processed.parquet"
+def _processed_key(ds: str) -> str:
+    return f"coingecko/{ds}/processed.parquet"
 
-def _failed_key(run_id: str) -> str:
-    return f"coingecko/{run_id}/quarantine.parquet"
+def _failed_key(ds: str) -> str:
+    return f"coingecko/{ds}/quarantine.parquet"
 
-def _base_transform(df: pd.DataFrame, run_id: str) -> pd.DataFrame:
+def _base_transform(df: pd.DataFrame, ds: str) -> pd.DataFrame:
     df = df[[
         "id", "symbol", "name", "current_price", "total_volume",
         "market_cap", "price_change_percentage_24h", "last_updated",
@@ -65,20 +65,19 @@ def _base_transform(df: pd.DataFrame, run_id: str) -> pd.DataFrame:
         "price_change_percentage_24h": "price_change_pct_24h",
         "last_updated": "api_last_updated",
     }, inplace=True)
-    df["api_last_updated"] = pd.to_datetime(df["api_last_updated"], utc=True)
+    df["api_last_updated"] = (
+        pd.to_datetime(df["api_last_updated"], utc=True)
+        .dt.tz_convert("UTC")
+        .dt.tz_localize(None)
+    )
     df.dropna(subset=["price_change_pct_24h", "current_price"], inplace=True)
-    df["etl_run_id"] = run_id
+    df["etl_run_id"] = ds
     df["etl_extracted_at"] = pendulum.now("UTC").isoformat()
     return df
 
 #  Tasks 
 
 def create_table_if_not_exists(**context):
-    """
-    NOTE: Using raw psycopg2 instead of PostgresOperator because
-    apache-airflow-providers-postgres is not installed in the running containers.
-    _PIP_ADDITIONAL_REQUIREMENTS will install it on next full restart.
-    """
     conn = BaseHook.get_connection(POSTGRES_CONN_ID)
     pg_conn = psycopg2.connect(
         host=conn.host, port=conn.port or 5432, dbname=conn.schema,
@@ -111,22 +110,22 @@ def create_table_if_not_exists(**context):
 
 def extract_raw(**context):
     """Task A — fetch top 50 coins from CoinGecko and persist raw JSON to MinIO."""
-    run_id = context["run_id"]
+    ds = context["ds"]
     log.info("Fetching CoinGecko data...")
     resp = requests.get(COINGECKO_URL, timeout=30)
     resp.raise_for_status()
     coins = resp.json()
 
     s3 = S3Hook(aws_conn_id=MINIO_CONN_ID)
-    key = _raw_key(run_id)
-    s3.load_bytes(json.dumps(coins, indent=2).encode(), key, BUCKET_RAW)
+    key = _raw_key(ds)
+    s3.load_bytes(json.dumps(coins, indent=2).encode(), key, BUCKET_RAW, replace=True)
     log.info("Saved %d coins → %s", len(coins), key)
     context["ti"].xcom_push(key="raw_s3_key", value=key)
 
 
 def quality_check_raw(**context):
     s3 = S3Hook(aws_conn_id=MINIO_CONN_ID)
-    key = _raw_key(context["run_id"])
+    key = _raw_key(context["ds"])
     coins = json.loads(s3.get_key(key, BUCKET_RAW).get()["Body"].read())
 
     if len(coins) == 0:
@@ -141,43 +140,55 @@ def quality_check_raw(**context):
 
 def transform_highcap(**context):
     """Task B — coins with market_cap >= HIGHCAP_THRESHOLD_USD."""
-    run_id = context["run_id"]
+    ds = context["ds"]
     s3 = S3Hook(aws_conn_id=MINIO_CONN_ID)
-    raw = json.loads(s3.get_key(_raw_key(run_id), BUCKET_RAW).get()["Body"].read())
+    raw = json.loads(s3.get_key(_raw_key(ds), BUCKET_RAW).get()["Body"].read())
 
     df = pd.DataFrame(raw)
     before = len(df)
     df = df[df["market_cap"] >= HIGHCAP_THRESHOLD_USD]
-    df = _base_transform(df, run_id)
+    df = _base_transform(df, ds)
     df.sort_values("total_volume", ascending=False, inplace=True)
     df.reset_index(drop=True, inplace=True)
     df["volume_rank"] = df.index + 1
     df["subset"] = "highcap"
 
     buf = io.BytesIO()
-    df.to_parquet(buf, index=False)
-    s3.load_bytes(buf.getvalue(), _highcap_key(run_id), BUCKET_PROCESSED)
+    df.to_parquet(
+        buf,
+        index=False,
+        engine="pyarrow",
+        coerce_timestamps="ms",
+        allow_truncated_timestamps=True,
+    )
+    s3.load_bytes(buf.getvalue(), _highcap_key(ds), BUCKET_PROCESSED, replace=True)
     log.info("High-cap transform: %d → %d rows", before, len(df))
 
 
 def transform_lowcap(**context):
     """Task C — coins with market_cap < HIGHCAP_THRESHOLD_USD."""
-    run_id = context["run_id"]
+    ds = context["ds"]
     s3 = S3Hook(aws_conn_id=MINIO_CONN_ID)
-    raw = json.loads(s3.get_key(_raw_key(run_id), BUCKET_RAW).get()["Body"].read())
+    raw = json.loads(s3.get_key(_raw_key(ds), BUCKET_RAW).get()["Body"].read())
 
     df = pd.DataFrame(raw)
     before = len(df)
     df = df[df["market_cap"] < HIGHCAP_THRESHOLD_USD]
-    df = _base_transform(df, run_id)
     df.sort_values("total_volume", ascending=False, inplace=True)
     df.reset_index(drop=True, inplace=True)
     df["volume_rank"] = df.index + 1
     df["subset"] = "lowcap"
+    df = _base_transform(df, ds)
 
     buf = io.BytesIO()
-    df.to_parquet(buf, index=False)
-    s3.load_bytes(buf.getvalue(), _lowcap_key(run_id), BUCKET_PROCESSED)
+    df.to_parquet(
+        buf,
+        index=False,
+        engine="pyarrow",
+        coerce_timestamps="ms",
+        allow_truncated_timestamps=True,
+    )
+    s3.load_bytes(buf.getvalue(), _lowcap_key(ds), BUCKET_PROCESSED, replace=True)
     log.info("Low-cap transform: %d → %d rows", before, len(df))
 
 
@@ -187,14 +198,14 @@ def quality_check_and_merge(**context):
     Pushes 'qc_passed' XCom so branch_on_quality can route accordingly.
     Trigger rule: ALL_SUCCESS — only runs if both B and C succeeded.
     """
-    run_id = context["run_id"]
+    ds = context["ds"]
     s3 = S3Hook(aws_conn_id=MINIO_CONN_ID)
 
     df_high = pd.read_parquet(io.BytesIO(
-        s3.get_key(_highcap_key(run_id), BUCKET_PROCESSED).get()["Body"].read()
+        s3.get_key(_highcap_key(ds), BUCKET_PROCESSED).get()["Body"].read()
     ))
     df_low = pd.read_parquet(io.BytesIO(
-        s3.get_key(_lowcap_key(run_id), BUCKET_PROCESSED).get()["Body"].read()
+        s3.get_key(_lowcap_key(ds), BUCKET_PROCESSED).get()["Body"].read()
     ))
 
     df = pd.concat([df_high, df_low], ignore_index=True)
@@ -209,15 +220,21 @@ def quality_check_and_merge(**context):
         issues.append(f"market_cap null rate {null_pct:.1%} exceeds 10% threshold")
 
     buf = io.BytesIO()
-    df.to_parquet(buf, index=False)
+    df.to_parquet(
+        buf,
+        index=False,
+        engine="pyarrow",
+        coerce_timestamps="ms",
+        allow_truncated_timestamps=True,
+    )
 
     if issues:
-        s3.load_bytes(buf.getvalue(), _failed_key(run_id), BUCKET_FAILED)
+        s3.load_bytes(buf.getvalue(), _failed_key(ds), BUCKET_FAILED, replace=True)
         log.warning("Processed QC FAILED: %s — quarantined to %s", issues, BUCKET_FAILED)
         context["ti"].xcom_push(key="qc_passed", value=False)
         context["ti"].xcom_push(key="qc_issues", value=issues)
     else:
-        s3.load_bytes(buf.getvalue(), _processed_key(run_id), BUCKET_PROCESSED)
+        s3.load_bytes(buf.getvalue(), _processed_key(ds), BUCKET_PROCESSED, replace=True)
         log.info("Processed QC passed: %d total records", len(df))
         context["ti"].xcom_push(key="qc_passed", value=True)
 
@@ -239,12 +256,14 @@ def branch_on_quality(**context):
 
 def load_to_postgres(**context):
     """Task D — loads merged parquet. Only reached via the passing branch."""
-    run_id = context["run_id"]
+    ds = context["ds"]
     s3 = S3Hook(aws_conn_id=MINIO_CONN_ID)
     df = pd.read_parquet(io.BytesIO(
-        s3.get_key(_processed_key(run_id), BUCKET_PROCESSED).get()["Body"].read()
+        s3.get_key(_processed_key(ds), BUCKET_PROCESSED).get()["Body"].read()
     ))
     log.info("Loading %d rows to Postgres...", len(df))
+
+    df = df.astype(object).where(df.notna(), None)
 
     upsert_sql = f"""
         INSERT INTO {POSTGRES_TABLE}
@@ -288,7 +307,7 @@ def quarantine_alert(**context):
     )
     log.error(
         "QUARANTINE | run=%s | data written to '%s' bucket | issues=%s",
-        context["run_id"], BUCKET_FAILED, issues,
+        context["ds"], BUCKET_FAILED, issues,
     )
 
 
@@ -300,7 +319,7 @@ def audit_log(**context):
     outcome = "LOADED" if qc_passed else "QUARANTINED"
     log.info(
         "AUDIT | run=%s | outcome=%s | issues=%s",
-        context["run_id"], outcome, issues,
+        context["ds"], outcome, issues,
     )
 
 def wait_for_market_settle(**context):
@@ -338,7 +357,7 @@ default_args = {
 
 with DAG(
     dag_id="coingecko_etl",
-    description="CoinGecko Top 50 ETL — advanced dependency patterns",
+    description="CoinGecko Top 50 ETL",
     schedule="0 18 * * 5",   # Every Friday at 18:00 UTC
     start_date=pendulum.datetime(2026, 1, 1, tz="UTC"),
     catchup=False,

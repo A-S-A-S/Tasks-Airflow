@@ -1,0 +1,17 @@
+FROM apache/airflow:2.10.5
+ARG AIRFLOW_VERSION=2.10.5
+ARG PYTHON_VERSION=3.12
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
+USER root
+RUN apt-get update -qq \
+ && apt-get install -y --no-install-recommends default-jdk-headless procps \
+ && rm -rf /var/lib/apt/lists/*
+
+USER airflow
+RUN pip install --no-cache-dir --constraint "https://raw.githubusercontent.com/apache/airflow/constraints-${AIRFLOW_VERSION}/constraints-${PYTHON_VERSION}.txt" \
+    apache-airflow-providers-amazon apache-airflow-providers-postgres apache-airflow-providers-apache-spark \
+    pyspark==3.5.4 pyarrow
+
+ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+ENV PATH="$JAVA_HOME/bin:$PATH"
